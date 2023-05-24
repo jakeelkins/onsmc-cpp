@@ -197,7 +197,7 @@ int main(){
     for (unsigned int i = 0; i<(input_dim); ++i){
         for (unsigned int j = 0; j<(input_dim); ++j){
             if (i==j){
-                F[input_dim*i + j] = G_val;
+                G[input_dim*i + j] = G_val;
             }
         }
     }

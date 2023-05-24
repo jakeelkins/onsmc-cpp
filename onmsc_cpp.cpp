@@ -324,7 +324,7 @@ int main(){
     for (unsigned int i = 0; i<(input_dim); ++i){
         for (unsigned int j = 0; j<(input_dim); ++j){
             if (i==j){
-                F[input_dim*i + j] = G_val;
+                G[input_dim*i + j] = G_val;
             }
         }
     }
@@ -376,7 +376,7 @@ int main(){
     unsigned int save_idx = 0;
     for (float t = 0.0f; t<tf; t+=dt){
         // get desired trajectory
-        printf("getting desired trajectory... \n");
+        //printf("getting desired trajectory... \n");
         desired_trajectory(yd.data(), yd_dot.data(), yd_ddot.data(), t);
 
         // e = yd - y
@@ -393,7 +393,7 @@ int main(){
         elementwise_addition(y_ddot_r.data(), yd_ddot.data(), Lambda_e_dot.data(), output_dim);
 
         // sat(s)
-        printf("sat(s)... \n");
+        //printf("sat(s)... \n");
         sat(sat_s.data(), s.data(), phi, output_dim);
 
         // make state vector
@@ -402,7 +402,7 @@ int main(){
         x[2] = 1.0f; // appended 1
 
         //get f_x
-        printf("forward pass... \n");
+        //printf("forward pass... \n");
         NN.forward(x.data());
 
         // control law is u = M_hat*y_ddot_r + NN.y_hat + M_hat*(D + eta)*sat_s;
@@ -448,7 +448,7 @@ int main(){
 
         // W
         // sigma_x*s_delta^T
-        printf("updating... \n");
+        //printf("updating... \n");
         transpose(s_delta_T.data(), s_delta.data(), hidden_dim, 1);
         gemm(sigma_x_s_delta.data(), NN.sigma_x.data(), s_delta_T.data(), hidden_dim, 1, output_dim);
         // F * sigma_x*s_delta^T
@@ -478,7 +478,7 @@ int main(){
         s_save[save_idx] = s[0];
 
         // integrate dynamics
-        printf("integrating... \n");
+        //printf("integrating... \n");
         dynamics(y_ddot.data(), u.data(), y.data(), y_dot.data(), output_dim);
         for (unsigned int i = 0; i<output_dim; ++i){
             y_dot[i] += y_ddot[i]*dt;
